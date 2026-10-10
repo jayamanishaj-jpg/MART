@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Elite Mart - Shopping Cart</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f5f1e6;
+color:#222;
+}
+
+nav{
+background:#234d20;
+color:white;
+padding:18px 45px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+nav h2{margin:0}
+
+nav a{
+color:white;
+text-decoration:none;
+margin-left:28px;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:35px 25px;
+}
+
+.page-title{
+font-size:30px;
+margin-bottom:25px;
+color:#234d20;
+}
+
+.cart-layout{
+display:grid;
+grid-template-columns:1fr 330px;
+gap:25px;
+}
+
+.cart-card,.summary,.empty{
+background:white;
+border-radius:16px;
+box-shadow:0 3px 12px rgba(0,0,0,.10);
+}
+
+.cart-card{
+padding:20px;
+}
+
+.cart-item{
+display:flex;
+align-items:center;
+gap:20px;
+padding:18px 5px;
+border-bottom:1px solid #eee;
+}
+
+.cart-item:last-child{
+border-bottom:none;
+}
+
+.product-image{
+width:120px;
+height:120px;
+object-fit:cover;
+border-radius:14px;
+}
+
+.item-info{
+flex:1;
+}
+
+.item-info h3{
+margin:0 0 8px;
+font-size:19px;
+color:#234d20;
+}
+
+.description{
+color:#777;
+font-size:14px;
+}
+
+.price{
+font-size:18px;
+font-weight:bold;
+}
+
+.remove{
+background:#f1eeee;
+color:#b32626;
+border:none;
+padding:8px 13px;
+border-radius:7px;
+cursor:pointer;
+}
+
+.summary{
+padding:25px;
+height:max-content;
+position:sticky;
+top:20px;
+}
+
+.summary h2{
+margin-top:0;
+color:#234d20;
+}
+
+.summary-row{
+display:flex;
+justify-content:space-between;
+margin:18px 0;
+color:#555;
+}
+
+.summary-total{
+border-top:1px solid #ddd;
+padding-top:18px;
+display:flex;
+justify-content:space-between;
+font-size:22px;
+font-weight:bold;
+color:#234d20;
+}
+
+.checkout{
+width:100%;
+background:#234d20;
+color:white;
+border:none;
+padding:14px;
+border-radius:9px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+margin-top:20px;
+}
+
+.empty{
+padding:60px 20px;
+text-align:center;
+}
+
+.empty h2{
+color:#234d20;
+}
+
+.shop-btn{
+display:inline-block;
+margin-top:15px;
+background:#234d20;
+color:white;
+padding:11px 20px;
+border-radius:8px;
+text-decoration:none;
+}
+
+@media(max-width:800px){
+.cart-layout{grid-template-columns:1fr}
+.summary{position:static}
+.cart-item{flex-wrap:wrap}
+.product-image{width:95px;height:95px}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<h2>Elite Mart</h2>
+
+<div>
+<a href="home.html">Home</a>
+<a href="products.html">Products</a>
+<a href="cart.html">Cart</a>
+<a href="login.html">Logout</a>
+</div>
+</nav>
+
+<div class="container">
+
+<h1 class="page-title">&#128722; Shopping Cart</h1>
+
+<div id="emptyCart" style="display:none" class="empty">
+<h2>Your Cart is Empty</h2>
+<p>Add some products to your cart and come back here.</p>
+<a class="shop-btn" href="products.html">Continue Shopping</a>
+</div>
+
+<div id="cartLayout" class="cart-layout">
+
+<div class="cart-card">
+<h2>Cart Items</h2>
+<div id="cart"></div>
+</div>
+
+<div class="summary">
+
+<h2>Order Summary</h2>
+
+<div class="summary-row">
+<span>Items</span>
+<span id="itemCount">0</span>
+</div>
+
+<div class="summary-row">
+<span>Delivery</span>
+<span>Free</span>
+</div>
+
+<div class="summary-total">
+<span>Total</span>
+<span>&#8377;<span id="total">0</span></span>
+</div>
+
+<button class="checkout" onclick="checkout()">
+Place Order
+</button>
+
+</div>
+</div>
+</div>
+
+<script>
+
+function getImage(name){
+
+if(name==="Wireless Headphones")
+return "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500";
+
+if(name==="Smart Watch")
+return "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500";
+
+if(name==="Java Programming Book")
+return "https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=500";
+
+if(name==="Bluetooth Speaker")
+return "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500";
+
+return "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=500";
+
+}
+
+function showCart(){
+
+let cart=JSON.parse(localStorage.getItem('cart')||'[]');
+
+let box=document.getElementById('cart');
+let total=0;
+
+if(cart.length===0){
+
+document.getElementById('cartLayout').style.display='none';
+document.getElementById('emptyCart').style.display='block';
+
+return;
+}
+
+document.getElementById('cartLayout').style.display='grid';
+document.getElementById('emptyCart').style.display='none';
+
+box.innerHTML='';
+
+cart.forEach((item,index)=>{
+
+total+=Number(item.price);
+
+box.innerHTML+=`
+
+<div class="cart-item">
+
+<img class="product-image"
+src="${getImage(item.name)}"
+alt="${item.name}">
+
+<div class="item-info">
+
+<h3>${item.name}</h3>
+
+<p class="description">Quality product from Elite Mart</p>
+
+<p class="price">&#8377;${item.price}</p>
+
+</div>
+
+<button class="remove" onclick="removeItem(${index})">
+Remove
+</button>
+
+</div>
+
+`;
+
+});
+
+document.getElementById('total').innerText=total;
+document.getElementById('itemCount').innerText=cart.length;
+
+}
+
+function removeItem(index){
+
+let cart=JSON.parse(localStorage.getItem('cart')||'[]');
+
+cart.splice(index,1);
+
+localStorage.setItem('cart',JSON.stringify(cart));
+
+showCart();
+
+}
+
+async function checkout(){
+
+let cart=JSON.parse(localStorage.getItem('cart')||'[]');
+
+if(cart.length===0){
+
+alert('Your cart is empty!');
+return;
+
+}
+
+let total=cart.reduce((sum,item)=>sum+Number(item.price),0);
+
+try{
+
+let response=await fetch('placeOrder',{
+
+method:'POST',
+
+headers:{
+'Content-Type':'application/x-www-form-urlencoded'
+},
+
+body:'total='+encodeURIComponent(total)+'&cart='+encodeURIComponent(cart.map(item => (item.productId||1)+','+(item.quantity||1)+','+Number(item.price)).join('|'))
+
+});
+
+if(response.ok){
+
+alert('Order placed successfully!');
+
+localStorage.removeItem('cart');
+
+showCart();
+
+}else{
+
+alert('Order failed. Please login again and try.');
+
+}
+
+}catch(error){
+
+alert('Server connection failed. Please try again.');
+
+}
+
+}
+
+showCart();
+
+</script>
+
+</body>
+</html>

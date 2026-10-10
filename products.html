@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>EliteMart - Products</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#f8f4e8;
+    color:#222;
+}
+
+nav{
+    background:#234d20;
+    color:white;
+    padding:18px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+nav h2{
+    margin:0;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:25px;
+}
+
+nav a:hover{
+    text-decoration:underline;
+}
+
+h1{
+    padding:30px 40px;
+    color:#234d20;
+}
+
+.grid{
+    display:flex;
+    gap:25px;
+    flex-wrap:wrap;
+    padding:20px 40px;
+}
+
+.card{
+    background:white;
+    width:230px;
+    padding:22px;
+    border-radius:12px;
+    box-shadow:0 2px 8px #ccc;
+}
+
+.card h2{
+    color:#234d20;
+}
+
+.price{
+    font-size:20px;
+    font-weight:bold;
+}
+
+button{
+    background:#234d20;
+    color:white;
+    border:0;
+    padding:10px 18px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#163615;
+}
+
+.product-img{
+    width:100%;
+    height:160px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-bottom:15px;
+}
+
+.review-box{
+    margin:30px 40px;
+    padding:20px;
+    background:white;
+    border-radius:15px;
+    box-shadow:0 3px 12px rgba(0,0,0,.1);
+}
+
+.review-box select,
+.review-box input{
+    padding:10px;
+    margin:10px;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <h2>EliteMart</h2>
+
+    <div>
+        <a href="home.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="cart.html">Cart</a>
+        <a href="login.html">Logout</a>
+    </div>
+</nav>
+
+<h1>All Products</h1>
+
+<div class="grid">
+
+    <!-- Wireless Headphones -->
+    <div class="card">
+
+        <img
+            src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500"
+            class="product-img"
+        >
+
+        <h2>Wireless Headphones</h2>
+
+        <p>Bluetooth wireless headphones</p>
+
+        <p class="price">&#8377;1499</p>
+
+        <button onclick="addCart('Wireless Headphones',1499)">
+            Add to Cart
+        </button>
+
+    </div>
+
+
+    <!-- Smart Watch -->
+    <div class="card">
+
+        <img
+            src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500"
+            class="product-img"
+        >
+
+        <h2>Smart Watch</h2>
+
+        <p>Fitness and smart watch</p>
+
+        <p class="price">&#8377;2499</p>
+
+        <button onclick="addCart('Smart Watch',2499)">
+            Add to Cart
+        </button>
+
+    </div>
+
+
+    <!-- Java Programming Book -->
+    <div class="card">
+
+        <img
+            src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=500"
+            class="product-img"
+        >
+
+        <h2>Java Programming Book</h2>
+
+        <p>Learn Java programming</p>
+
+        <p class="price">&#8377;599</p>
+
+        <button onclick="addCart('Java Programming Book',599)">
+            Add to Cart
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- Review Section -->
+
+<div class="review-box">
+
+    <h2>&#9733; Write a Review</h2>
+
+    <select id="reviewProduct">
+        <option value="1">Wireless Headphones</option>
+        <option value="2">Smart Watch</option>
+        <option value="3">Java Programming Book</option>
+    </select>
+
+    <select id="reviewRating">
+        <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
+        <option value="4">&#9733;&#9733;&#9733;&#9733;</option>
+        <option value="3">&#9733;&#9733;&#9733;</option>
+        <option value="2">&#9733;&#9733;</option>
+        <option value="1">&#9733;</option>
+    </select>
+
+    <input
+        id="reviewComment"
+        placeholder="Write your review"
+    >
+
+    <button onclick="submitReview()">
+        Submit Review
+    </button>
+
+</div>
+
+
+<script>
+
+function addCart(name, price){
+
+    let cart = JSON.parse(
+        localStorage.getItem('cart') || '[]'
+    );
+
+    let productId =
+        name === 'Wireless Headphones'
+        ? 1
+        : name === 'Smart Watch'
+        ? 2
+        : 3;
+
+    cart.push({
+        productId: productId,
+        name: name,
+        price: price
+    });
+
+    localStorage.setItem(
+        'cart',
+        JSON.stringify(cart)
+    );
+
+    alert('Product added to EliteMart cart!');
+}
+
+
+function submitReview(){
+
+    let product =
+        document.getElementById('reviewProduct').value;
+
+    let rating =
+        document.getElementById('reviewRating').value;
+
+    let comment =
+        document.getElementById('reviewComment').value;
+
+    if(comment.trim() === ''){
+        alert('Please write a review!');
+        return;
+    }
+
+    alert(
+        'Thank you for your review on EliteMart!'
+    );
+
+    document.getElementById('reviewComment').value = '';
+}
+
+</script>
+
+</body>
+</html>

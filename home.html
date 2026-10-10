@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Elite Mart - Home</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#f8f4e8;
+color:#222
+}
+
+nav{
+background:#234d20;
+color:white;
+padding:18px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+nav h2{margin:0}
+nav a{
+color:white;
+text-decoration:none;
+margin-left:25px
+}
+
+.hero{
+margin:25px 40px;
+height:300px;
+border-radius:18px;
+background:
+linear-gradient(rgba(20,50,20,.55),rgba(20,50,20,.55)),
+url("https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200")
+center/cover;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+color:white;
+text-align:center
+}
+
+.hero h1{
+font-size:42px;
+margin:10px
+}
+
+.hero p{
+font-size:20px
+}
+
+button{
+background:#234d20;
+color:white;
+border:0;
+padding:10px 18px;
+border-radius:6px;
+cursor:pointer
+}
+
+.hero button{
+background:white;
+color:#234d20;
+font-weight:bold
+}
+
+section{
+padding:20px 40px
+}
+
+.category-box,.product-grid{
+display:flex;
+gap:20px;
+flex-wrap:wrap
+}
+
+.category,.product{
+background:white;
+border-radius:12px;
+box-shadow:0 2px 8px #ccc;
+overflow:hidden
+}
+
+.category{
+width:200px;
+text-align:center;
+padding-bottom:15px
+}
+
+.category img{
+width:100%;
+height:130px;
+object-fit:cover
+}
+
+.category h3{
+color:#234d20
+}
+
+.product{
+width:220px;
+padding-bottom:18px
+}
+
+.product img{
+width:100%;
+height:160px;
+object-fit:cover
+}
+
+.product h3,.product p{
+margin-left:15px;
+margin-right:15px
+}
+
+.product h3{
+color:#234d20
+}
+
+.price{
+font-size:20px;
+font-weight:bold
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<h2>Elite Mart</h2>
+<div>
+<a href="home.html">Home</a>
+<a href="products.html">Products</a>
+<a href="cart.html">Cart</a>
+<a href="login.html">Logout</a>
+</div>
+</nav>
+
+<section class="hero">
+<h1>Welcome to Elite Mart</h1>
+<p>Your Smart Marketplace</p>
+<button onclick="location.href='products.html'">Explore Products</button>
+</section>
+
+<section>
+<h2>Shop by Category</h2>
+
+<div class="category-box">
+
+<div class="category">
+<img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?w=500">
+<h3>Electronics</h3>
+</div>
+
+<div class="category">
+<img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=500">
+<h3>Fashion</h3>
+</div>
+
+<div class="category">
+<img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=500">
+<h3>Books</h3>
+</div>
+
+<div class="category">
+<img src="https://images.unsplash.com/photo-1556912167-f556f1f39fdf?w=500">
+<h3>Home & Kitchen</h3>
+</div>
+
+</div>
+</section>
+
+<section>
+<h2>Featured Products</h2>
+
+<div class="product-grid">
+
+<div class="product">
+<img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500">
+<h3>Wireless Headphones</h3>
+<p>Bluetooth wireless headphones</p>
+<p class="price">&#8377;1499</p>
+<button onclick="addCart('Wireless Headphones',1499)">Add to Cart</button>
+</div>
+
+<div class="product">
+<img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500">
+<h3>Smart Watch</h3>
+<p>Fitness and smart watch</p>
+<p class="price">&#8377;2499</p>
+<button onclick="addCart('Smart Watch',2499)">Add to Cart</button>
+</div>
+
+<div class="product">
+<img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=500">
+<h3>Java Programming Book</h3>
+<p>Learn Java programming</p>
+<p class="price">&#8377;599</p>
+<button onclick="addCart('Java Programming Book',599)">Add to Cart</button>
+</div>
+
+</div>
+</section>
+
+<script>
+
+function addCart(name,price){
+
+let cart=JSON.parse(localStorage.getItem('cart')||'[]');
+
+cart.push({
+name:name,
+price:price
+});
+
+localStorage.setItem('cart',JSON.stringify(cart));
+
+alert('Product added to cart!');
+
+}
+
+</script>
+
+</body>
+</html>
